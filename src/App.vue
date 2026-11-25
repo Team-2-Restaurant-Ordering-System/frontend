@@ -19,12 +19,20 @@
             Home
           </router-link>
           <router-link 
+            to="/admin" 
+            class="px-3 py-1.5 rounded-lg text-sm font-medium transition text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+            active-class="bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200"
+          >
+            Admin
+          </router-link>
+          <router-link 
             to="/preview" 
             class="px-3 py-1.5 rounded-lg text-sm font-medium transition text-slate-600 hover:text-slate-900 hover:bg-slate-100"
             active-class="bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200"
           >
             Preview
           </router-link>
+          
         </nav>
       </div>
     </header>
