@@ -1,10 +1,13 @@
 <script setup>
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 </script>
 
 <template>
   <div class="min-h-screen bg-slate-100 text-slate-800 font-sans">
     <!-- Navigation Bar -->
-    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-10">
+    <header v-if="route.path !== '/admin'" class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-10">
       <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="text-2xl">🍔</span>
@@ -38,7 +41,7 @@
     </header>
 
     <!-- Main Content Area -->
-    <main class="max-w-4xl mx-auto px-6 py-8">
+    <main :class="route.path === '/admin' ? 'w-full p-0' : 'max-w-4xl mx-auto px-6 py-8'">
       <router-view />
     </main>
   </div>
