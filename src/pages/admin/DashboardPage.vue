@@ -171,7 +171,7 @@ function statusDotClass(status) {
 <template>
   <div class="min-h-screen bg-[#f4f7f5] font-sans text-[#192a22]">
     <header
-      class="fixed inset-x-0 top-0 z-40 flex h-[72px] border-b border-[#e5eae7] bg-white"
+      class="fixed inset-x-0 top-0 z-40 flex h-[80px] border-b border-[#e5eae7] bg-white"
     >
       <div
         class="flex basis-[236px] shrink-0 items-center gap-[10px] border-r border-[#edf0ee] px-[22px] max-[1180px]:basis-[220px] max-[860px]:basis-[158px] max-[860px]:gap-[7px] max-[860px]:px-[10px] max-[680px]:basis-auto max-[680px]:border-r-0 max-[680px]:px-3 max-[560px]:gap-[7px]"
@@ -186,18 +186,17 @@ function statusDotClass(status) {
           <Menu v-else :size="19" />
         </button>
         <div
-          class="grid size-[34px] shrink-0 place-items-center rounded-full bg-[#102f23] text-[15px] font-bold text-white max-[860px]:size-[30px]"
+          class="grid size-[60px] shrink-0 place-items-center rounded-full bg-[#102f23] text-[15px] font-bold text-white max-[860px]:size-[30px]"
         >
-          R
         </div>
         <div class="flex flex-col gap-0.5 whitespace-nowrap max-[560px]:hidden">
-          <strong class="text-xs tracking-[-0.02em] max-[860px]:text-[10px]"
+          <strong class="text-2xl tracking-[-0.02em] max-[860px]:text-[10px]"
             >RestaurantOS</strong
           >
-          <span class="text-[11px] text-[#68756e]">Admin</span>
+          <span class="text-[20px] text-[#68756e]">Admin</span>
         </div>
         <span
-          class="rounded bg-[#e8f4ec] px-[6px] py-1 text-[10px] font-bold text-[#174b36] max-[860px]:hidden"
+          class="rounded bg-[#e8f4ec] px-[6px] py-1 text-[15px] font-bold text-[#174b36] max-[860px]:hidden"
           >V2.4</span
         >
       </div>
@@ -206,7 +205,7 @@ function statusDotClass(status) {
         class="flex min-w-0 flex-1 items-center justify-between px-7 max-[680px]:px-[14px]"
       >
         <div
-          class="flex items-center gap-[10px] text-[13px] text-[#647169] max-[680px]:hidden"
+          class="flex items-center gap-[10px] text-[23px] text-[#647169] max-[680px]:hidden"
         >
           <span>Operations</span>
           <span class="text-[#a3ada7]">›</span>
@@ -216,16 +215,16 @@ function statusDotClass(status) {
           class="flex items-center gap-[15px] max-[860px]:gap-2 max-[680px]:ml-auto max-[680px]:gap-[9px]"
         >
           <span
-            class="flex items-center gap-[7px] whitespace-nowrap text-xs font-medium text-[#415249] max-[860px]:hidden"
+            class="flex items-center gap-[7px] whitespace-nowrap text-lg font-medium text-[#415249] max-[860px]:hidden"
             ><i class="inline-block size-[7px] rounded-full bg-[#2d7753]"></i>
             Lunch Service Active</span
           >
           <button
-            class="relative inline-flex size-[30px] items-center justify-center rounded-[7px] border-0 bg-transparent text-[#526158] hover:bg-[#f2f5f3]"
+            class="relative inline-flex size-[40px] items-center justify-center rounded-[7px] border-0 bg-transparent text-[#526158] hover:bg-[#f2f5f3]"
             type="button"
             aria-label="Notifications"
           >
-            <Bell :size="17" />
+            <Bell :size="25" />
             <i
               class="absolute right-[6px] top-[5px] size-[6px] rounded-full bg-[#d34b3c]"
             ></i>
@@ -236,7 +235,7 @@ function statusDotClass(status) {
             MV
           </div>
           <button
-            class="inline-flex items-center gap-[5px] whitespace-nowrap border-0 bg-transparent py-[5px] text-xs font-semibold text-[#34443b] max-[560px]:hidden"
+            class="inline-flex items-center gap-[5px] whitespace-nowrap border-0 bg-transparent py-[5px] text-lg font-semibold text-[#34443b] max-[560px]:hidden"
             type="button"
           >
             Marcus V. <ChevronDown :size="14" />
@@ -254,45 +253,45 @@ function statusDotClass(status) {
     ></button>
 
     <aside
-      class="fixed bottom-0 left-0 top-[72px] z-[30] w-[236px] overflow-y-auto border-r border-[#e5eae7] bg-white px-3 py-[19px] max-[1180px]:w-[220px] max-[860px]:w-[158px] max-[860px]:px-2 max-[680px]:z-[50] max-[680px]:w-[252px] max-[680px]:-translate-x-full max-[680px]:transition-transform max-[680px]:duration-[180ms] max-[680px]:shadow-[12px_0_30px_rgb(15_35_25_/_10%)]"
+      class="fixed bottom-0 left-0 top-[72px] z-[30] w-[260px] overflow-y-auto border-r border-[#e5eae7] bg-white px-3 py-[19px] max-[1180px]:w-[220px] max-[860px]:w-[158px] max-[860px]:px-2 max-[680px]:z-[50] max-[680px]:w-[252px] max-[680px]:-translate-x-full max-[680px]:transition-transform max-[680px]:duration-[180ms] max-[680px]:shadow-[12px_0_30px_rgb(15_35_25_/_10%)]"
       :class="{ 'max-[680px]:translate-x-0': sidebarOpen }"
     >
       <nav aria-label="Admin navigation" class="max-[680px]:relative">
         <div>
           <p
-            class="mx-[9px] mb-2 text-[11px] font-bold uppercase tracking-[0.075em] text-[#79847e]"
+            class="mx-[9px] mb-2 text-[20px] font-bold uppercase tracking-[0.075em] text-[#79847e]"
           >
             Operations
           </p>
           <button
             v-for="item in operationLinks"
             :key="item.label"
-            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[13px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
+            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[20px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
             :class="
               item.active
-                ? 'bg-[#102f23] font-semibold text-white hover:bg-[#102f23] hover:text-white'
+                ? 'bg-[#102f23] font-semibold hover:bg-[#102f23] '
                 : ''
             "
             type="button"
           >
-            <component :is="item.icon" :size="16" :stroke-width="1.8" />
+            <component :is="item.icon" :size="25" :stroke-width="1.8" />
             <span class="flex-1">{{ item.label }}</span>
           </button>
         </div>
 
         <div class="mt-[21px]">
           <p
-            class="mx-[9px] mb-2 text-[11px] font-bold uppercase tracking-[0.075em] text-[#79847e]"
+            class="mx-[9px] mb-2 text-[20px] font-bold uppercase tracking-[0.075em] text-[#79847e]"
           >
             Management
           </p>
           <button
             v-for="item in managementLinks"
             :key="item.label"
-            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[13px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
+            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[20px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
             type="button"
           >
-            <component :is="item.icon" :size="16" :stroke-width="1.8" />
+            <component :is="item.icon" :size="25" :stroke-width="2" />
             <span class="flex-1">{{ item.label }}</span>
             <ChevronDown
               v-if="item.label === 'Menu Management'"
@@ -304,15 +303,15 @@ function statusDotClass(status) {
 
         <div class="mt-[21px]">
           <p
-            class="mx-[9px] mb-2 text-[11px] font-bold uppercase tracking-[0.075em] text-[#79847e]"
+            class="mx-[9px] mb-2 text-[20px] font-bold uppercase tracking-[0.075em] text-[#79847e]"
           >
             Account
           </p>
           <button
-            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[13px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
+            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[20px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
             type="button"
           >
-            <Bell :size="16" :stroke-width="1.8" />
+            <Bell :size="20" :stroke-width="1.8" />
             <span class="flex-1">Notifications</span>
             <span
               class="grid size-5 min-w-5 place-items-center rounded-full bg-[#fae3de] text-[10px] font-bold text-[#b94535]"
@@ -320,10 +319,10 @@ function statusDotClass(status) {
             >
           </button>
           <button
-            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[13px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
+            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[20px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
             type="button"
           >
-            <WalletCards :size="16" :stroke-width="1.8" />
+            <WalletCards :size="20" :stroke-width="1.8" />
             <span class="flex-1">Pass Terminals (8/8)</span>
             <span
               class="ml-auto inline-block size-[7px] rounded-full bg-[#2d7753]"
@@ -344,7 +343,7 @@ function statusDotClass(status) {
         >
           <div>
             <p
-              class="mb-[7px] text-xs font-bold uppercase tracking-[0.09em] text-[#69766e]"
+              class="mb-[7px] text-ms font-bold uppercase tracking-[0.09em] text-[#69766e]"
             >
               Shift 2 <span class="px-0.5">·</span> Lunch
             </p>
@@ -357,19 +356,19 @@ function statusDotClass(status) {
           <div class="flex flex-wrap gap-2 max-[560px]:w-full">
             <button
               type="button"
-              class="inline-flex min-h-[40px] items-center justify-center gap-[8px] rounded-md border border-[#dfe5e1] bg-white px-3 text-xs font-semibold text-[#3d4b43] transition-[background-color,border-color] duration-[120ms] hover:border-[#bbc9c0] hover:bg-[#fbfcfb] max-[560px]:flex-1 max-[560px]:px-2 max-[560px]:text-[11px]"
+              class="inline-flex min-h-[40px] items-center justify-center gap-[8px] rounded-md border border-[#dfe5e1] bg-white px-3 text-ms font-semibold text-[#3d4b43] transition-[background-color,border-color] duration-[120ms] hover:border-[#bbc9c0] hover:bg-[#fbfcfb] max-[560px]:flex-1 max-[560px]:px-2 max-[560px]:text-[11px]"
             >
               <CalendarDays :size="14" />Today, Oct 24
             </button>
             <button
               type="button"
-              class="inline-flex min-h-[40px] items-center justify-center gap-[8px] rounded-md border border-[#dfe5e1] bg-white px-3 text-xs font-semibold text-[#3d4b43] transition-[background-color,border-color] duration-[120ms] hover:border-[#bbc9c0] hover:bg-[#fbfcfb] max-[560px]:flex-1 max-[560px]:px-2 max-[560px]:text-[11px]"
+              class="inline-flex min-h-[40px] items-center justify-center gap-[8px] rounded-md border border-[#dfe5e1] bg-white px-3 text-ms font-semibold text-[#3d4b43] transition-[background-color,border-color] duration-[120ms] hover:border-[#bbc9c0] hover:bg-[#fbfcfb] max-[560px]:flex-1 max-[560px]:px-2 max-[560px]:text-[11px]"
             >
               <Download :size="14" />Export
             </button>
             <button
               type="button"
-              class="inline-flex min-h-[40px] items-center justify-center gap-[8px] rounded-md border border-transparent bg-[#102f23] px-3 text-xs font-semibold text-white transition-colors duration-[120ms] hover:bg-[#1b513a] max-[560px]:flex-1 max-[560px]:px-2 max-[560px]:text-[11px]"
+              class="inline-flex min-h-[40px] items-center justify-center gap-[8px] rounded-md border border-transparent bg-[#102f23] px-3 text-ms font-semibold text-white transition-colors duration-[120ms] hover:bg-[#1b513a] max-[560px]:flex-1 max-[560px]:px-2 max-[560px]:text-[11px]"
             >
               <Plus :size="15" />New Order
             </button>
@@ -384,7 +383,7 @@ function statusDotClass(status) {
             class="min-h-[128px] rounded-[10px] border border-[#e3e9e5] bg-white p-[18px] shadow-[0_2px_5px_rgb(23_43_32_/_3%)] max-[860px]:min-h-[120px] max-[860px]:p-[15px] max-[560px]:p-4"
           >
             <div
-              class="flex items-center justify-between text-xs font-bold uppercase tracking-[0.055em] text-[#66736b]"
+              class="flex items-center justify-between text-ms font-bold uppercase tracking-[0.055em] text-[#66736b]"
             >
               <span>Total Orders</span
               ><ReceiptText class="text-[#68766e]" :size="17" />
@@ -395,7 +394,7 @@ function statusDotClass(status) {
               148
             </div>
             <div
-              class="mt-3 flex items-center gap-[5px] text-[11px] text-[#758078] max-[860px]:text-[10px] max-[560px]:text-[10px]"
+              class="mt-3 flex items-center gap-[5px] text-[15px] text-[#758078] max-[860px]:text-[15px] max-[560px]:text-[15px]"
             >
               <span class="font-bold text-[#1d7a4e]">+12%</span> vs yesterday
               <span class="ml-auto">4.2m avg pace</span>
@@ -405,7 +404,7 @@ function statusDotClass(status) {
             class="min-h-[128px] rounded-[10px] border border-[#e3e9e5] bg-white p-[18px] shadow-[0_2px_5px_rgb(23_43_32_/_3%)] max-[860px]:min-h-[120px] max-[860px]:p-[15px] max-[560px]:p-4"
           >
             <div
-              class="flex items-center justify-between text-xs font-bold uppercase tracking-[0.055em] text-[#66736b]"
+              class="flex items-center justify-between text-ms font-bold uppercase tracking-[0.055em] text-[#66736b]"
             >
               <span>Active Tables</span
               ><Armchair class="text-[#68766e]" :size="17" />
@@ -419,7 +418,7 @@ function statusDotClass(status) {
               >
             </div>
             <div
-              class="mt-3 flex items-center gap-[5px] text-[11px] text-[#758078] max-[860px]:text-[10px] max-[560px]:text-[10px]"
+              class="mt-3 flex items-center gap-[5px] text-[15px] text-[#758078] max-[860px]:text-[15px] max-[560px]:text-[15px]"
             >
               85% Occupancy <span class="ml-auto">64 Covers</span>
             </div>
@@ -428,7 +427,7 @@ function statusDotClass(status) {
             class="min-h-[128px] rounded-[10px] border border-[#e3e9e5] bg-white p-[18px] shadow-[0_2px_5px_rgb(23_43_32_/_3%)] max-[860px]:min-h-[120px] max-[860px]:p-[15px] max-[560px]:p-4"
           >
             <div
-              class="flex items-center justify-between text-xs font-bold uppercase tracking-[0.055em] text-[#66736b]"
+              class="flex items-center justify-between text-ms font-bold uppercase tracking-[0.055em] text-[#66736b]"
             >
               <span>Available Tables</span
               ><UtensilsCrossed class="text-[#68766e]" :size="17" />
@@ -439,7 +438,7 @@ function statusDotClass(status) {
               6
             </div>
             <div
-              class="mt-3 flex items-center gap-[5px] text-[11px] text-[#758078] max-[860px]:text-[10px] max-[560px]:text-[10px]"
+              class="mt-3 flex items-center gap-[5px] text-[15px] text-[#758078] max-[860px]:text-[15px] max-[560px]:text-[15px]"
             >
               Open bays <span class="ml-auto">2 Reserved</span>
             </div>
@@ -448,7 +447,7 @@ function statusDotClass(status) {
             class="min-h-[128px] rounded-[10px] border border-[#e3e9e5] bg-white p-[18px] shadow-[0_2px_5px_rgb(23_43_32_/_3%)] max-[860px]:min-h-[120px] max-[860px]:p-[15px] max-[560px]:p-4"
           >
             <div
-              class="flex items-center justify-between text-xs font-bold uppercase tracking-[0.055em] text-[#66736b]"
+              class="flex items-center justify-between text-ms font-bold uppercase tracking-[0.055em] text-[#66736b]"
             >
               <span>Shift Revenue</span
               ><BadgeDollarSign class="text-[#68766e]" :size="17" />
@@ -459,7 +458,7 @@ function statusDotClass(status) {
               $4,820
             </div>
             <div
-              class="mt-3 flex items-center gap-[5px] text-[11px] text-[#758078] max-[860px]:text-[10px] max-[560px]:text-[10px]"
+              class="mt-3 flex items-center gap-[5px] text-[15px] text-[#758078] max-[860px]:text-[15px] max-[560px]:text-[15px]"
             >
               Avg Ticket $32.50
               <span class="ml-auto font-bold text-[#1d7a4e]">+8.4% target</span>
@@ -479,7 +478,7 @@ function statusDotClass(status) {
               >
                 Dining Zones
               </h2>
-              <span class="whitespace-nowrap text-[11px] text-[#758078]"
+              <span class="whitespace-nowrap text-[15px] text-[#758078]"
                 >Avg Service Duration:
                 <strong class="font-bold text-[#34473c]">48m</strong></span
               >
@@ -487,7 +486,7 @@ function statusDotClass(status) {
             <div class="grid gap-3">
               <div v-for="zone in diningZones" :key="zone.name">
                 <div
-                  class="mb-[7px] flex items-center justify-between gap-3 text-xs"
+                  class="mb-[7px] flex items-center justify-between gap-3 text-ms"
                 >
                   <div
                     class="overflow-hidden text-ellipsis whitespace-nowrap font-semibold text-[#35463c]"
@@ -497,7 +496,7 @@ function statusDotClass(status) {
                       zone.details
                     }}</span>
                   </div>
-                  <span class="shrink-0 text-[11px] text-[#67746c]"
+                  <span class="shrink-0 text-[15px] text-[#67746c]"
                     >{{ zone.occupancy }}%</span
                   >
                 </div>
