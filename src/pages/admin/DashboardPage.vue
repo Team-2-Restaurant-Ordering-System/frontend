@@ -26,6 +26,7 @@ import {
   Users,
   WalletCards,
   X,
+  ExternalLink
 } from "@lucide/vue";
 
 const sidebarOpen = ref(false);
@@ -56,7 +57,7 @@ const diningZones = [
     occupancy: 92,
     staff: "4 Captains",
     turnover: "Turnover 52m",
-    color: "#176247",
+    color: "#166534",
   },
   {
     name: "Patio & Veranda",
@@ -64,7 +65,7 @@ const diningZones = [
     occupancy: 66,
     staff: "2 Captains",
     turnover: "Turnover 41m",
-    color: "#f16c50",
+    color: "#ea580c",
   },
   {
     name: "Bar & High-Tops",
@@ -72,7 +73,7 @@ const diningZones = [
     occupancy: 50,
     staff: "2 Mixologists",
     turnover: "Turnover 32m",
-    color: "#d89a2b",
+    color: "#ca8a04",
   },
 ];
 
@@ -151,508 +152,394 @@ const visibleOrders = computed(() => {
 
 function statusClass(status) {
   return {
-    Ready: "bg-[#fff0ed] text-[#a74437]",
-    "In Kitchen": "bg-[#eaf5ee] text-[#276344]",
-    Pending: "bg-[#fff3df] text-[#986016]",
-    Settled: "bg-[#f0f2f1] text-[#68746d]",
+    Ready: "bg-rose-50 text-rose-700 border border-rose-200/60",
+    "In Kitchen": "bg-emerald-50 text-emerald-700 border border-emerald-200/60",
+    Pending: "bg-amber-50 text-amber-700 border border-amber-200/60",
+    Settled: "bg-slate-100 text-slate-600 border border-slate-200/60",
   }[status];
 }
 
 function statusDotClass(status) {
   return {
-    Ready: "bg-[#d95545]",
-    "In Kitchen": "bg-[#38865b]",
-    Pending: "bg-[#df9b32]",
-    Settled: "bg-[#8b9690]",
+    Ready: "bg-rose-500",
+    "In Kitchen": "bg-emerald-500",
+    Pending: "bg-amber-500",
+    Settled: "bg-slate-400",
   }[status];
 }
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f4f7f5] font-sans text-[#192a22]">
-    <header
-      class="fixed inset-x-0 top-0 z-40 flex h-[80px] border-b border-[#e5eae7] bg-white"
-    >
-      <div
-        class="flex basis-[236px] shrink-0 items-center gap-[10px] border-r border-[#edf0ee] px-[22px] max-[1180px]:basis-[220px] max-[860px]:basis-[158px] max-[860px]:gap-[7px] max-[860px]:px-[10px] max-[680px]:basis-auto max-[680px]:border-r-0 max-[680px]:px-3 max-[560px]:gap-[7px]"
-      >
+  <div class="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased">
+    <!-- Top Header Bar -->
+    <header class="fixed inset-x-0 top-0 z-40 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 lg:px-6">
+      <div class="flex items-center gap-3">
         <button
-          class="hidden size-[34px] items-center justify-center rounded-[7px] border-0 bg-transparent text-[#526158] hover:bg-[#f2f5f3] max-[680px]:inline-flex"
+          class="inline-flex size-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 lg:hidden"
           type="button"
           :aria-label="sidebarOpen ? 'Close navigation' : 'Open navigation'"
           @click="sidebarOpen = !sidebarOpen"
         >
-          <X v-if="sidebarOpen" :size="19" />
-          <Menu v-else :size="19" />
+          <X v-if="sidebarOpen" :size="18" />
+          <Menu v-else :size="18" />
         </button>
-        <div
-          class="grid size-[60px] shrink-0 place-items-center rounded-full bg-[#102f23] text-[15px] font-bold text-white max-[860px]:size-[30px]"
-        >
+
+        <div class="flex items-center gap-2.5">
+          <div class="grid size-9 place-items-center rounded-xl bg-emerald-800 text-white shadow-sm">
+            <UtensilsCrossed :size="18" />
+          </div>
+          <div class="leading-tight">
+            <span class="block text-base font-bold tracking-tight text-slate-900">RestaurantOS</span>
+            <span class="block text-[11px] font-medium uppercase tracking-wider text-slate-500">Admin Operations</span>
+          </div>
         </div>
-        <div class="flex flex-col gap-0.5 whitespace-nowrap max-[560px]:hidden">
-          <strong class="text-2xl tracking-[-0.02em] max-[860px]:text-[10px]"
-            >RestaurantOS</strong
-          >
-          <span class="text-[20px] text-[#68756e]">Admin</span>
-        </div>
-        <span
-          class="rounded bg-[#e8f4ec] px-[6px] py-1 text-[15px] font-bold text-[#174b36] max-[860px]:hidden"
-          >V2.4</span
-        >
+
+        <span class="ml-2 hidden rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 lg:inline-block">
+          v2.4 Live
+        </span>
       </div>
 
-      <div
-        class="flex min-w-0 flex-1 items-center justify-between px-7 max-[680px]:px-[14px]"
-      >
-        <div
-          class="flex items-center gap-[10px] text-[23px] text-[#647169] max-[680px]:hidden"
-        >
-          <span>Operations</span>
-          <span class="text-[#a3ada7]">›</span>
-          <strong class="font-semibold text-[#192a22]">Overview</strong>
+      <div class="flex items-center gap-3 lg:gap-5">
+        <!-- Live Service Status Pill -->
+        <div class="hidden items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50/70 px-3 py-1 text-xs font-medium text-emerald-800 md:flex">
+          <span class="relative flex size-2">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-emerald-600"></span>
+          </span>
+          Lunch Service Active
         </div>
-        <div
-          class="flex items-center gap-[15px] max-[860px]:gap-2 max-[680px]:ml-auto max-[680px]:gap-[9px]"
+
+        <!-- Back to Customer View Link -->
+        <router-link
+          to="/"
+          class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
         >
-          <span
-            class="flex items-center gap-[7px] whitespace-nowrap text-lg font-medium text-[#415249] max-[860px]:hidden"
-            ><i class="inline-block size-[7px] rounded-full bg-[#2d7753]"></i>
-            Lunch Service Active</span
-          >
-          <button
-            class="relative inline-flex size-[40px] items-center justify-center rounded-[7px] border-0 bg-transparent text-[#526158] hover:bg-[#f2f5f3]"
-            type="button"
-            aria-label="Notifications"
-          >
-            <Bell :size="25" />
-            <i
-              class="absolute right-[6px] top-[5px] size-[6px] rounded-full bg-[#d34b3c]"
-            ></i>
-          </button>
-          <div
-            class="grid size-[34px] place-items-center rounded-full border-2 border-white bg-[linear-gradient(145deg,#f3d9a8,#bb8852)] text-[10px] font-bold text-[#3e3022] shadow-[0_0_0_1px_#e6e9e7]"
-          >
+          <span>Customer View</span>
+          <ExternalLink :size="13" />
+        </router-link>
+
+        <!-- Notifications -->
+        <button
+          class="relative grid size-9 place-items-center rounded-lg text-slate-500 hover:bg-slate-100"
+          type="button"
+          aria-label="Notifications"
+        >
+          <Bell :size="18" />
+          <span class="absolute right-2 top-2 size-2 rounded-full bg-rose-500"></span>
+        </button>
+
+        <div class="h-6 w-px bg-slate-200"></div>
+
+        <!-- User Profile Pill -->
+        <div class="flex items-center gap-2.5">
+          <div class="grid size-8 place-items-center rounded-full bg-gradient-to-tr from-emerald-700 to-teal-500 text-xs font-bold text-white shadow-sm">
             MV
           </div>
-          <button
-            class="inline-flex items-center gap-[5px] whitespace-nowrap border-0 bg-transparent py-[5px] text-lg font-semibold text-[#34443b] max-[560px]:hidden"
-            type="button"
-          >
-            Marcus V. <ChevronDown :size="14" />
-          </button>
+          <div class="hidden text-left sm:block">
+            <p class="text-xs font-bold text-slate-800">Marcus Vance</p>
+            <p class="text-[11px] text-slate-500">Head Floor Manager</p>
+          </div>
+          <ChevronDown :size="14" class="hidden text-slate-400 sm:block" />
         </div>
       </div>
     </header>
 
-    <button
+    <!-- Mobile Backdrop -->
+    <div
       v-if="sidebarOpen"
-      type="button"
-      class="fixed inset-x-0 bottom-0 top-[72px] z-[45] block border-0 bg-[rgb(16_35_25_/_28%)] min-[681px]:hidden"
-      aria-label="Close navigation"
+      class="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm lg:hidden"
       @click="sidebarOpen = false"
-    ></button>
+    ></div>
 
+    <!-- Sidebar Navigation -->
     <aside
-      class="fixed bottom-0 left-0 top-[72px] z-[30] w-[260px] overflow-y-auto border-r border-[#e5eae7] bg-white px-3 py-[19px] max-[1180px]:w-[220px] max-[860px]:w-[158px] max-[860px]:px-2 max-[680px]:z-[50] max-[680px]:w-[252px] max-[680px]:-translate-x-full max-[680px]:transition-transform max-[680px]:duration-[180ms] max-[680px]:shadow-[12px_0_30px_rgb(15_35_25_/_10%)]"
-      :class="{ 'max-[680px]:translate-x-0': sidebarOpen }"
+      class="fixed bottom-0 left-0 top-16 z-40 w-64 border-r border-slate-200 bg-white transition-transform duration-200 ease-in-out lg:translate-x-0"
+      :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
-      <nav aria-label="Admin navigation" class="max-[680px]:relative">
-        <div>
-          <p
-            class="mx-[9px] mb-2 text-[20px] font-bold uppercase tracking-[0.075em] text-[#79847e]"
-          >
-            Operations
-          </p>
-          <button
-            v-for="item in operationLinks"
-            :key="item.label"
-            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[20px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
-            :class="
-              item.active
-                ? 'bg-[#102f23] font-semibold hover:bg-[#102f23] '
-                : ''
-            "
-            type="button"
-          >
-            <component :is="item.icon" :size="25" :stroke-width="1.8" />
-            <span class="flex-1">{{ item.label }}</span>
-          </button>
-        </div>
+      <div class="flex h-full flex-col justify-between overflow-y-auto p-4">
+        <nav class="space-y-6" aria-label="Admin Navigation">
+          <!-- Operations Group -->
+          <div>
+            <p class="mb-2 px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Operations
+            </p>
+            <div class="space-y-1">
+              <button
+                v-for="item in operationLinks"
+                :key="item.label"
+                type="button"
+                class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition"
+                :class="
+                  item.active
+                    ? 'bg-emerald-800 text-white shadow-sm'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                "
+              >
+                <component :is="item.icon" :size="18" />
+                <span>{{ item.label }}</span>
+              </button>
+            </div>
+          </div>
 
-        <div class="mt-[21px]">
-          <p
-            class="mx-[9px] mb-2 text-[20px] font-bold uppercase tracking-[0.075em] text-[#79847e]"
-          >
-            Management
-          </p>
-          <button
-            v-for="item in managementLinks"
-            :key="item.label"
-            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[20px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
-            type="button"
-          >
-            <component :is="item.icon" :size="25" :stroke-width="2" />
-            <span class="flex-1">{{ item.label }}</span>
-            <ChevronDown
-              v-if="item.label === 'Menu Management'"
-              class="ml-auto"
-              :size="13"
-            />
-          </button>
-        </div>
+          <!-- Management Group -->
+          <div>
+            <p class="mb-2 px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Management
+            </p>
+            <div class="space-y-1">
+              <button
+                v-for="item in managementLinks"
+                :key="item.label"
+                type="button"
+                class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+              >
+                <component :is="item.icon" :size="18" />
+                <span class="flex-1 text-left">{{ item.label }}</span>
+                <ChevronDown v-if="item.label === 'Menu Management'" :size="14" class="text-slate-400" />
+              </button>
+            </div>
+          </div>
+        </nav>
 
-        <div class="mt-[21px]">
-          <p
-            class="mx-[9px] mb-2 text-[20px] font-bold uppercase tracking-[0.075em] text-[#79847e]"
-          >
-            Account
-          </p>
-          <button
-            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[20px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
-            type="button"
-          >
-            <Bell :size="20" :stroke-width="1.8" />
-            <span class="flex-1">Notifications</span>
-            <span
-              class="grid size-5 min-w-5 place-items-center rounded-full bg-[#fae3de] text-[10px] font-bold text-[#b94535]"
-              >3</span
-            >
-          </button>
-          <button
-            class="my-0.5 flex min-h-[40px] w-full items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] text-left text-[20px] text-[#536159] transition-[background-color,color] duration-[120ms] hover:bg-[#f3f6f4] hover:text-[#102f23] max-[860px]:gap-[7px] max-[860px]:px-[7px] max-[860px]:text-[11px]"
-            type="button"
-          >
-            <WalletCards :size="20" :stroke-width="1.8" />
-            <span class="flex-1">Pass Terminals (8/8)</span>
-            <span
-              class="ml-auto inline-block size-[7px] rounded-full bg-[#2d7753]"
-            ></span>
-          </button>
+        <!-- Sidebar Footer Status -->
+        <div class="rounded-xl border border-slate-100 bg-slate-50 p-3 text-xs">
+          <div class="flex items-center justify-between text-slate-500">
+            <span>POS Sync</span>
+            <span class="inline-flex items-center gap-1 font-semibold text-emerald-700">
+              <span class="size-1.5 rounded-full bg-emerald-500"></span> Connected
+            </span>
+          </div>
+          <p class="mt-1 text-[11px] text-slate-400">8/8 Terminals Online</p>
         </div>
-      </nav>
+      </div>
     </aside>
 
-    <div
-      class="ml-[236px] min-h-screen pt-[72px] max-[1180px]:ml-[220px] max-[860px]:ml-[158px] max-[680px]:ml-0"
-    >
-      <div
-        class="mx-auto w-full max-w-[1540px] px-[30px] pb-8 pt-[27px] max-[1180px]:px-[22px] max-[860px]:px-4 max-[560px]:px-[14px] max-[560px]:pb-7 max-[560px]:pt-[22px]"
-      >
-        <section
-          class="mb-[21px] flex items-end justify-between gap-[18px] max-[560px]:mb-4 max-[560px]:flex-col max-[560px]:items-start max-[560px]:gap-[14px]"
-        >
+    <!-- Main Content Body -->
+    <main class="min-h-screen pt-16 lg:pl-64">
+      <div class="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
+        <!-- Page Title & Actions Header -->
+        <section class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p
-              class="mb-[7px] text-ms font-bold uppercase tracking-[0.09em] text-[#69766e]"
-            >
-              Shift 2 <span class="px-0.5">·</span> Lunch
-            </p>
-            <h1
-              class="m-0 text-[clamp(30px,2.5vw,38px)] font-bold leading-[1.15] tracking-[-0.045em] text-[#122a1e]"
-            >
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+              <span>Shift 2</span>
+              <span>·</span>
+              <span class="text-emerald-700 font-semibold">Lunch Service</span>
+            </div>
+            <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
               Operations Overview
             </h1>
           </div>
-          <div class="flex flex-wrap gap-2 max-[560px]:w-full">
+
+          <div class="flex flex-wrap items-center gap-2">
             <button
               type="button"
-              class="inline-flex min-h-[40px] items-center justify-center gap-[8px] rounded-md border border-[#dfe5e1] bg-white px-3 text-ms font-semibold text-[#3d4b43] transition-[background-color,border-color] duration-[120ms] hover:border-[#bbc9c0] hover:bg-[#fbfcfb] max-[560px]:flex-1 max-[560px]:px-2 max-[560px]:text-[11px]"
+              class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
             >
-              <CalendarDays :size="14" />Today, Oct 24
+              <CalendarDays :size="14" class="text-slate-500" />
+              Today, Oct 24
             </button>
             <button
               type="button"
-              class="inline-flex min-h-[40px] items-center justify-center gap-[8px] rounded-md border border-[#dfe5e1] bg-white px-3 text-ms font-semibold text-[#3d4b43] transition-[background-color,border-color] duration-[120ms] hover:border-[#bbc9c0] hover:bg-[#fbfcfb] max-[560px]:flex-1 max-[560px]:px-2 max-[560px]:text-[11px]"
+              class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
             >
-              <Download :size="14" />Export
+              <Download :size="14" class="text-slate-500" />
+              Export
             </button>
             <button
               type="button"
-              class="inline-flex min-h-[40px] items-center justify-center gap-[8px] rounded-md border border-transparent bg-[#102f23] px-3 text-ms font-semibold text-white transition-colors duration-[120ms] hover:bg-[#1b513a] max-[560px]:flex-1 max-[560px]:px-2 max-[560px]:text-[11px]"
+              class="inline-flex items-center gap-2 rounded-lg bg-emerald-800 px-3.5 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-900"
             >
-              <Plus :size="15" />New Order
+              <Plus :size="15" />
+              New Order
             </button>
           </div>
         </section>
 
-        <section
-          class="grid grid-cols-4 gap-3 max-[860px]:gap-2 max-[680px]:grid-cols-2"
-          aria-label="Shift statistics"
-        >
-          <article
-            class="min-h-[128px] rounded-[10px] border border-[#e3e9e5] bg-white p-[18px] shadow-[0_2px_5px_rgb(23_43_32_/_3%)] max-[860px]:min-h-[120px] max-[860px]:p-[15px] max-[560px]:p-4"
-          >
-            <div
-              class="flex items-center justify-between text-ms font-bold uppercase tracking-[0.055em] text-[#66736b]"
-            >
-              <span>Total Orders</span
-              ><ReceiptText class="text-[#68766e]" :size="17" />
+        <!-- KPI Statistic Cards -->
+        <section class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Shift Statistics">
+          <div class="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <span>Total Orders</span>
+              <div class="grid size-8 place-items-center rounded-lg bg-slate-50 text-slate-600">
+                <ReceiptText :size="16" />
+              </div>
             </div>
-            <div
-              class="mt-3 flex items-baseline gap-1 text-[32px] font-bold leading-none tracking-[-0.045em] text-[#102d20] max-[860px]:text-[28px]"
-            >
-              148
+            <div class="mt-2 text-3xl font-bold tracking-tight text-slate-900">148</div>
+            <div class="mt-2 flex items-center justify-between text-xs text-slate-500">
+              <span class="font-semibold text-emerald-600">+12% vs yesterday</span>
+              <span>4.2m avg pace</span>
             </div>
-            <div
-              class="mt-3 flex items-center gap-[5px] text-[15px] text-[#758078] max-[860px]:text-[15px] max-[560px]:text-[15px]"
-            >
-              <span class="font-bold text-[#1d7a4e]">+12%</span> vs yesterday
-              <span class="ml-auto">4.2m avg pace</span>
+          </div>
+
+          <div class="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <span>Active Tables</span>
+              <div class="grid size-8 place-items-center rounded-lg bg-emerald-50 text-emerald-700">
+                <Armchair :size="16" />
+              </div>
             </div>
-          </article>
-          <article
-            class="min-h-[128px] rounded-[10px] border border-[#e3e9e5] bg-white p-[18px] shadow-[0_2px_5px_rgb(23_43_32_/_3%)] max-[860px]:min-h-[120px] max-[860px]:p-[15px] max-[560px]:p-4"
-          >
-            <div
-              class="flex items-center justify-between text-ms font-bold uppercase tracking-[0.055em] text-[#66736b]"
-            >
-              <span>Active Tables</span
-              ><Armchair class="text-[#68766e]" :size="17" />
+            <div class="mt-2 flex items-baseline gap-1 text-3xl font-bold tracking-tight text-slate-900">
+              18<span class="text-base font-medium text-slate-400">/24</span>
             </div>
-            <div
-              class="mt-3 flex items-baseline gap-1 text-[32px] font-bold leading-none tracking-[-0.045em] text-[#102d20] max-[860px]:text-[28px]"
-            >
-              18<small
-                class="text-sm font-medium tracking-normal text-[#79867e]"
-                >/24</small
-              >
+            <div class="mt-2 flex items-center justify-between text-xs text-slate-500">
+              <span>85% Occupancy</span>
+              <span class="font-semibold text-slate-700">64 Covers</span>
             </div>
-            <div
-              class="mt-3 flex items-center gap-[5px] text-[15px] text-[#758078] max-[860px]:text-[15px] max-[560px]:text-[15px]"
-            >
-              85% Occupancy <span class="ml-auto">64 Covers</span>
+          </div>
+
+          <div class="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <span>Available Tables</span>
+              <div class="grid size-8 place-items-center rounded-lg bg-amber-50 text-amber-700">
+                <UtensilsCrossed :size="16" />
+              </div>
             </div>
-          </article>
-          <article
-            class="min-h-[128px] rounded-[10px] border border-[#e3e9e5] bg-white p-[18px] shadow-[0_2px_5px_rgb(23_43_32_/_3%)] max-[860px]:min-h-[120px] max-[860px]:p-[15px] max-[560px]:p-4"
-          >
-            <div
-              class="flex items-center justify-between text-ms font-bold uppercase tracking-[0.055em] text-[#66736b]"
-            >
-              <span>Available Tables</span
-              ><UtensilsCrossed class="text-[#68766e]" :size="17" />
+            <div class="mt-2 text-3xl font-bold tracking-tight text-slate-900">6</div>
+            <div class="mt-2 flex items-center justify-between text-xs text-slate-500">
+              <span>Open bays</span>
+              <span class="font-semibold text-amber-700">2 Reserved</span>
             </div>
-            <div
-              class="mt-3 flex items-baseline gap-1 text-[32px] font-bold leading-none tracking-[-0.045em] text-[#102d20] max-[860px]:text-[28px]"
-            >
-              6
+          </div>
+
+          <div class="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <span>Shift Revenue</span>
+              <div class="grid size-8 place-items-center rounded-lg bg-emerald-50 text-emerald-700">
+                <BadgeDollarSign :size="16" />
+              </div>
             </div>
-            <div
-              class="mt-3 flex items-center gap-[5px] text-[15px] text-[#758078] max-[860px]:text-[15px] max-[560px]:text-[15px]"
-            >
-              Open bays <span class="ml-auto">2 Reserved</span>
+            <div class="mt-2 text-3xl font-bold tracking-tight text-slate-900">$4,820</div>
+            <div class="mt-2 flex items-center justify-between text-xs text-slate-500">
+              <span>Avg ticket $32.50</span>
+              <span class="font-semibold text-emerald-600">+8.4% target</span>
             </div>
-          </article>
-          <article
-            class="min-h-[128px] rounded-[10px] border border-[#e3e9e5] bg-white p-[18px] shadow-[0_2px_5px_rgb(23_43_32_/_3%)] max-[860px]:min-h-[120px] max-[860px]:p-[15px] max-[560px]:p-4"
-          >
-            <div
-              class="flex items-center justify-between text-ms font-bold uppercase tracking-[0.055em] text-[#66736b]"
-            >
-              <span>Shift Revenue</span
-              ><BadgeDollarSign class="text-[#68766e]" :size="17" />
-            </div>
-            <div
-              class="mt-3 flex items-baseline gap-1 text-[32px] font-bold leading-none tracking-[-0.045em] text-[#102d20] max-[860px]:text-[28px]"
-            >
-              $4,820
-            </div>
-            <div
-              class="mt-3 flex items-center gap-[5px] text-[15px] text-[#758078] max-[860px]:text-[15px] max-[560px]:text-[15px]"
-            >
-              Avg Ticket $32.50
-              <span class="ml-auto font-bold text-[#1d7a4e]">+8.4% target</span>
-            </div>
-          </article>
+          </div>
         </section>
 
-        <section
-          class="mt-[13px] grid grid-cols-[minmax(0,1.42fr)_minmax(0,1fr)] gap-[13px] max-[680px]:grid-cols-1"
-        >
-          <article
-            class="rounded-[10px] border border-[#e3e9e5] bg-white p-[18px] shadow-[0_2px_5px_rgb(23_43_32_/_3%)] max-[560px]:p-4"
-          >
-            <div class="mb-[15px] flex items-center justify-between gap-3">
-              <h2
-                class="m-0 text-base font-bold tracking-[-0.01em] text-[#20352a]"
-              >
-                Dining Zones
-              </h2>
-              <span class="whitespace-nowrap text-[15px] text-[#758078]"
-                >Avg Service Duration:
-                <strong class="font-bold text-[#34473c]">48m</strong></span
-              >
+        <!-- Floor Occupancy & Order Pipeline -->
+        <section class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <!-- Dining Zones -->
+          <div class="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm lg:col-span-7">
+            <div class="mb-4 flex items-center justify-between">
+              <div>
+                <h2 class="text-base font-bold text-slate-900">Dining Zones Occupancy</h2>
+                <p class="text-xs text-slate-500">Real-time floor seating distribution</p>
+              </div>
+              <span class="text-xs text-slate-500">
+                Avg Service: <strong class="text-slate-800">48m</strong>
+              </span>
             </div>
-            <div class="grid gap-3">
-              <div v-for="zone in diningZones" :key="zone.name">
-                <div
-                  class="mb-[7px] flex items-center justify-between gap-3 text-ms"
-                >
-                  <div
-                    class="overflow-hidden text-ellipsis whitespace-nowrap font-semibold text-[#35463c]"
-                  >
+
+            <div class="space-y-4">
+              <div v-for="zone in diningZones" :key="zone.name" class="space-y-1.5">
+                <div class="flex items-center justify-between text-xs">
+                  <div class="font-semibold text-slate-800">
                     {{ zone.name }}
-                    <span class="ml-2 font-normal text-[#7b867f]">{{
-                      zone.details
-                    }}</span>
+                    <span class="ml-2 font-normal text-slate-400">{{ zone.details }}</span>
                   </div>
-                  <span class="shrink-0 text-[15px] text-[#67746c]"
-                    >{{ zone.occupancy }}%</span
-                  >
+                  <span class="font-bold text-slate-700">{{ zone.occupancy }}%</span>
                 </div>
-                <div
-                  class="h-[7px] overflow-hidden rounded-[10px] bg-[#edf1ee]"
-                >
-                  <span
-                    class="block h-full rounded-[inherit]"
+                <div class="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                  <div
+                    class="h-full rounded-full transition-all duration-500"
                     :style="{
                       width: `${zone.occupancy}%`,
                       backgroundColor: zone.color,
                     }"
-                  ></span>
+                  ></div>
                 </div>
-                <div
-                  class="mt-[6px] flex items-center justify-between gap-3 text-[10px] text-[#78837c]"
-                >
-                  <span>{{ zone.staff }}</span
-                  ><span>{{ zone.turnover }}</span>
+                <div class="flex items-center justify-between text-[11px] text-slate-400">
+                  <span>{{ zone.staff }}</span>
+                  <span>{{ zone.turnover }}</span>
                 </div>
               </div>
             </div>
-            <div
-              class="mt-4 flex items-center justify-between border-t border-[#edf0ee] pt-3 text-[11px] text-[#647169]"
-            >
-              <span class="flex items-center gap-[6px]"
-                ><i
-                  class="inline-block size-[6px] rounded-full bg-[#2d7753]"
-                ></i
-                >Normal flow pace</span
-              >
-              <button
-                class="border-0 bg-transparent p-0 font-semibold text-[#174b36]"
-                type="button"
-              >
-                Graphic Floor View <span class="ml-1">→</span>
+
+            <div class="mt-5 flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-500">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="size-2 rounded-full bg-emerald-500"></span>
+                Floor flow is optimal
+              </span>
+              <button class="font-semibold text-emerald-700 hover:text-emerald-800" type="button">
+                Open Graphic Table Layout &rarr;
               </button>
             </div>
-          </article>
+          </div>
 
-          <article
-            class="rounded-[10px] border border-[#e3e9e5] bg-white p-[18px] shadow-[0_2px_5px_rgb(23_43_32_/_3%)] max-[560px]:p-4"
-          >
-            <div class="mb-[15px] flex items-center justify-between gap-3">
-              <h2
-                class="m-0 text-base font-bold tracking-[-0.01em] text-[#20352a]"
-              >
-                Order Pipeline
-              </h2>
-              <span
-                class="rounded-[20px] bg-[#edf5ef] px-[9px] py-[5px] text-[10px] font-bold text-[#326447]"
-                >15 Active</span
-              >
+          <!-- Order Pipeline -->
+          <div class="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm lg:col-span-5">
+            <div class="mb-4 flex items-center justify-between">
+              <div>
+                <h2 class="text-base font-bold text-slate-900">Kitchen & Bar Pipeline</h2>
+                <p class="text-xs text-slate-500">Station progress overview</p>
+              </div>
+              <span class="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
+                15 Active
+              </span>
             </div>
-            <div class="grid grid-cols-2 gap-2">
-              <div
-                class="flex min-h-[88px] flex-col items-start rounded-lg border border-[#edf0ee] bg-[#f7f9f8] px-[14px] py-3"
-              >
-                <span class="text-[11px] text-[#68756d]">Pending POS</span
-                ><strong
-                  class="mt-1 text-2xl font-bold leading-none text-[#20372a]"
-                  >03</strong
-                ><small class="mt-1 text-[10px] text-[#7a857e]"
-                  >Awaiting accept</small
-                >
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="rounded-lg border border-slate-100 bg-slate-50/70 p-3">
+                <span class="text-[11px] font-medium text-slate-500">Pending POS</span>
+                <p class="mt-1 text-2xl font-bold text-slate-900">03</p>
+                <span class="text-[10px] text-slate-400">Awaiting kitchen accept</span>
               </div>
-              <div
-                class="flex min-h-[88px] flex-col items-start rounded-lg border border-[#edf0ee] bg-[#f7f9f8] px-[14px] py-3"
-              >
-                <span class="text-[11px] text-[#68756d]">In Kitchen</span
-                ><strong
-                  class="mt-1 text-2xl font-bold leading-none text-[#20372a]"
-                  >08</strong
-                ><small class="mt-1 text-[10px] text-[#7a857e]"
-                  >Hot line / grill</small
-                >
+              <div class="rounded-lg border border-slate-100 bg-slate-50/70 p-3">
+                <span class="text-[11px] font-medium text-slate-500">In Kitchen</span>
+                <p class="mt-1 text-2xl font-bold text-slate-900">08</p>
+                <span class="text-[10px] text-slate-400">Line & grill stations</span>
               </div>
-              <div
-                class="flex min-h-[88px] flex-col items-start rounded-lg border border-[#edf0ee] bg-[#f7f9f8] px-[14px] py-3"
-              >
-                <span class="text-[11px] text-[#68756d]">Ready to Pass</span
-                ><strong
-                  class="mt-1 text-2xl font-bold leading-none text-[#cf4e3d]"
-                  >04</strong
-                ><small class="mt-1 text-[10px] text-[#7a857e]"
-                  >Runner alert</small
-                >
+              <div class="rounded-lg border border-slate-100 bg-slate-50/70 p-3">
+                <span class="text-[11px] font-medium text-slate-500">Ready to Pass</span>
+                <p class="mt-1 text-2xl font-bold text-rose-600">04</p>
+                <span class="text-[10px] text-slate-400">Runner alert active</span>
               </div>
-              <div
-                class="flex min-h-[88px] flex-col items-start rounded-lg border border-[#edf0ee] bg-[#f7f9f8] px-[14px] py-3"
-              >
-                <span class="text-[11px] text-[#68756d]">Completed</span
-                ><strong
-                  class="mt-1 text-2xl font-bold leading-none text-[#20372a]"
-                  >133</strong
-                ><small class="mt-1 text-[10px] text-[#7a857e]"
-                  >Served today</small
-                >
+              <div class="rounded-lg border border-slate-100 bg-slate-50/70 p-3">
+                <span class="text-[11px] font-medium text-slate-500">Completed Today</span>
+                <p class="mt-1 text-2xl font-bold text-slate-900">133</p>
+                <span class="text-[10px] text-slate-400">Served & cleared</span>
               </div>
             </div>
-            <div
-              class="mt-3 flex items-center gap-[9px] rounded-md border border-[#f1e7dc] bg-[#fcf8f3] px-3 py-3 text-[11px] leading-[1.5] text-[#5a5146]"
-            >
-              <TriangleAlert class="shrink-0 text-[#c64a39]" :size="14" />
-              <span
-                >Order <strong class="text-[#b84334]">#ORD-1089</strong> running
-                late on Garde Manger (+4m)</span
-              >
+
+            <div class="mt-4 flex items-center gap-2.5 rounded-lg border border-amber-200/80 bg-amber-50/60 p-3 text-xs text-amber-900">
+              <TriangleAlert class="size-4 shrink-0 text-amber-600" />
+              <span>
+                Order <strong class="font-semibold text-amber-950">#ORD-1089</strong> running +4m on Garde Manger.
+              </span>
             </div>
-          </article>
+          </div>
         </section>
 
-        <section
-          class="mt-[13px] overflow-hidden rounded-[9px] border border-[#e3e9e5] bg-white p-0 shadow-[0_2px_5px_rgb(23_43_32_/_3%)]"
-        >
-          <div
-            class="flex items-center justify-between gap-4 px-5 pb-4 pt-[18px] max-[680px]:items-start max-[680px]:flex-col"
-          >
+        <!-- Orders Table Card -->
+        <section class="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm">
+          <!-- Table Controls Header -->
+          <div class="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
             <div>
-              <h2
-                class="m-0 text-base font-bold tracking-[-0.01em] text-[#20352a]"
-              >
-                Active Floor Orders
-              </h2>
-              <p class="mb-0 mt-1 text-xs text-[#78837c]">
-                Real-time dining session stream
-              </p>
+              <h2 class="text-base font-bold text-slate-900">Active Floor Orders</h2>
+              <p class="text-xs text-slate-500">Real-time table orders and prep countdown</p>
             </div>
-            <div
-              class="flex items-center gap-2 max-[680px]:w-full max-[680px]:flex-wrap max-[560px]:items-stretch"
-            >
-              <label
-                class="flex h-[38px] w-[240px] items-center gap-2 rounded-md border border-[#e2e8e4] px-3 text-[#7d8981] focus-within:border-[#8eae9a] focus-within:shadow-[0_0_0_2px_rgb(33_105_69_/_9%)] max-[680px]:flex-[1_1_200px]"
-              >
-                <Search :size="14" />
+
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+              <div class="relative w-full sm:w-60">
+                <Search :size="15" class="absolute left-3 top-2.5 text-slate-400" />
                 <input
-                  class="w-full min-w-0 border-0 bg-transparent text-xs text-[#27382e] outline-none placeholder:text-[#929c95]"
                   v-model="search"
                   type="search"
-                  placeholder="Search orders or tables..."
+                  placeholder="Search orders, tables, items..."
+                  class="w-full rounded-lg border border-slate-200 bg-slate-50/50 py-1.5 pl-9 pr-3 text-xs text-slate-800 placeholder-slate-400 transition focus:border-emerald-600 focus:bg-white focus:outline-none"
                 />
-              </label>
-              <div
-                class="flex gap-[3px] rounded-[7px] bg-[#f2f5f3] p-[3px] max-[560px]:w-full max-[560px]:justify-between"
-                role="group"
-                aria-label="Filter orders"
-              >
+              </div>
+
+              <div class="flex rounded-lg bg-slate-100 p-0.5 text-xs font-medium text-slate-600">
                 <button
                   v-for="filter in ['All orders', 'Active', 'Delayed']"
                   :key="filter"
                   type="button"
-                  class="min-h-[32px] rounded-[5px] border-0 bg-transparent px-3 text-[11px] text-[#69766e] hover:text-[#254c36] max-[560px]:flex-1"
+                  class="rounded-md px-3 py-1 transition"
                   :class="
                     orderFilter === filter
-                      ? 'bg-white font-bold text-[#214f36] shadow-[0_1px_3px_rgb(18_40_27_/_12%)]'
-                      : ''
+                      ? 'bg-white font-semibold text-slate-900 shadow-sm'
+                      : 'hover:text-slate-900'
                   "
                   @click="orderFilter = filter"
                 >
@@ -662,110 +549,63 @@ function statusDotClass(status) {
             </div>
           </div>
 
-          <div class="w-full overflow-x-auto border-t border-[#edf0ee]">
-            <table class="w-full min-w-[900px] border-collapse text-left">
-              <thead class="bg-[#f8faf9]">
+          <!-- Responsive Table -->
+          <div class="w-full overflow-x-auto">
+            <table class="w-full min-w-[760px] text-left text-xs">
+              <thead class="bg-slate-50 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                 <tr>
-                  <th
-                    class="h-10 whitespace-nowrap px-3 text-[10px] font-bold uppercase tracking-[0.055em] text-[#6e7a72] pl-4"
-                  >
-                    Order
-                  </th>
-                  <th
-                    class="h-10 whitespace-nowrap px-3 text-[10px] font-bold uppercase tracking-[0.055em] text-[#6e7a72]"
-                  >
-                    Table
-                  </th>
-                  <th
-                    class="h-10 whitespace-nowrap px-3 text-[10px] font-bold uppercase tracking-[0.055em] text-[#6e7a72]"
-                  >
-                    Party
-                  </th>
-                  <th
-                    class="h-10 whitespace-nowrap px-3 text-[10px] font-bold uppercase tracking-[0.055em] text-[#6e7a72]"
-                  >
-                    Items
-                  </th>
-                  <th
-                    class="h-10 whitespace-nowrap px-3 text-[10px] font-bold uppercase tracking-[0.055em] text-[#6e7a72]"
-                  >
-                    Elapsed
-                  </th>
-                  <th
-                    class="h-10 whitespace-nowrap px-3 text-[10px] font-bold uppercase tracking-[0.055em] text-[#6e7a72]"
-                  >
-                    Status
-                  </th>
-                  <th
-                    class="h-10 whitespace-nowrap px-3 text-right text-[10px] font-bold uppercase tracking-[0.055em] text-[#6e7a72]"
-                  >
-                    Total
-                  </th>
-                  <th
-                    class="h-10 whitespace-nowrap px-3 text-[10px] font-bold uppercase tracking-[0.055em] text-[#6e7a72]"
-                  ></th>
+                  <th class="py-3 pl-5 pr-3">Order ID</th>
+                  <th class="px-3 py-3">Table</th>
+                  <th class="px-3 py-3">Party</th>
+                  <th class="px-3 py-3">Ordered Items</th>
+                  <th class="px-3 py-3">Elapsed</th>
+                  <th class="px-3 py-3">Status</th>
+                  <th class="px-3 py-3 text-right">Total</th>
+                  <th class="py-3 pl-3 pr-5 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="divide-y divide-slate-100">
                 <tr
                   v-for="order in visibleOrders"
                   :key="order.id"
-                  class="hover:bg-[#fbfcfb]"
+                  class="transition hover:bg-slate-50/80"
                 >
-                  <td
-                    class="h-[52px] whitespace-nowrap border-t border-[#f0f2f1] pl-4 pr-3 text-xs font-bold text-[#1a5036]"
-                  >
+                  <td class="whitespace-nowrap py-3.5 pl-5 pr-3 font-semibold text-emerald-800">
                     {{ order.id }}
                   </td>
-                  <td
-                    class="h-[52px] whitespace-nowrap border-t border-[#f0f2f1] px-3 text-xs text-[#3e4c43]"
-                  >
+                  <td class="whitespace-nowrap px-3 font-medium text-slate-800">
                     {{ order.table }}
                   </td>
-                  <td
-                    class="h-[52px] whitespace-nowrap border-t border-[#f0f2f1] px-3 text-xs text-[#78837c]"
-                  >
+                  <td class="whitespace-nowrap px-3 text-slate-500">
                     {{ order.party }}
                   </td>
-                  <td
-                    class="h-[52px] max-w-[360px] overflow-hidden text-ellipsis whitespace-nowrap border-t border-[#f0f2f1] px-3 text-xs text-[#3e4c43]"
-                  >
+                  <td class="max-w-[280px] truncate px-3 text-slate-700" :title="order.items">
                     {{ order.items }}
                   </td>
-                  <td
-                    class="h-[52px] whitespace-nowrap border-t border-[#f0f2f1] px-3 text-xs text-[#3e4c43]"
-                    :class="order.minutes >= 15 ? 'text-[#c74a3b]' : ''"
-                  >
-                    <span class="inline-flex items-center gap-1"
-                      ><Clock3 v-if="order.minutes >= 15" :size="12" />{{
-                        order.elapsed
-                      }}</span
-                    >
-                  </td>
-                  <td
-                    class="h-[52px] whitespace-nowrap border-t border-[#f0f2f1] px-3 text-xs text-[#3e4c43]"
-                  >
+                  <td class="whitespace-nowrap px-3 font-medium">
                     <span
-                      class="inline-flex items-center gap-[6px] rounded-[20px] px-[10px] py-[6px] text-[10px] font-semibold"
-                      :class="statusClass(order.status)"
+                      class="inline-flex items-center gap-1"
+                      :class="order.minutes >= 15 ? 'font-bold text-rose-600' : 'text-slate-600'"
                     >
-                      <i
-                        class="size-[6px] rounded-full"
-                        :class="statusDotClass(order.status)"
-                      ></i
-                      >{{ order.status }}
+                      <Clock3 v-if="order.minutes >= 15" :size="13" />
+                      {{ order.elapsed }}
                     </span>
                   </td>
-                  <td
-                    class="h-[52px] whitespace-nowrap border-t border-[#f0f2f1] px-3 text-right text-xs font-semibold text-[#3e4c43]"
-                  >
+                  <td class="whitespace-nowrap px-3">
+                    <span
+                      class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold"
+                      :class="statusClass(order.status)"
+                    >
+                      <span class="size-1.5 rounded-full" :class="statusDotClass(order.status)"></span>
+                      {{ order.status }}
+                    </span>
+                  </td>
+                  <td class="whitespace-nowrap px-3 text-right font-bold text-slate-900">
                     {{ order.total }}
                   </td>
-                  <td
-                    class="h-[52px] w-10 whitespace-nowrap border-t border-[#f0f2f1] px-3 pr-[10px] text-xs text-[#7b8780]"
-                  >
+                  <td class="whitespace-nowrap py-3.5 pl-3 pr-5 text-right">
                     <button
-                      class="inline-grid size-6 place-items-center rounded-[5px] text-[#7b8780] hover:bg-[#edf2ef]"
+                      class="inline-grid size-7 place-items-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700"
                       type="button"
                       :aria-label="`More options for ${order.id}`"
                     >
@@ -773,77 +613,34 @@ function statusDotClass(status) {
                     </button>
                   </td>
                 </tr>
+
                 <tr v-if="visibleOrders.length === 0">
-                  <td
-                    colspan="8"
-                    class="h-[100px] border-t border-[#f0f2f1] text-center text-xs text-[#7a857e]"
-                  >
-                    No orders match your search.
+                  <td colspan="8" class="py-12 text-center text-slate-400">
+                    <UtensilsCrossed :size="24" class="mx-auto mb-2 text-slate-300" />
+                    No orders match your filter.
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          <div
-            class="flex min-h-[52px] items-center justify-between gap-3 border-t border-[#edf0ee] px-4 text-[11px] text-[#77827b]"
-          >
-            <span
-              >Showing {{ visibleOrders.length ? 1 : 0 }}–{{
-                visibleOrders.length
-              }}
-              of
-              {{
-                orderFilter === "All orders" && !search
-                  ? 148
-                  : visibleOrders.length
-              }}
-              orders</span
-            >
-            <div class="flex items-center gap-[3px]" aria-label="Order pages">
-              <button
-                class="inline-grid size-[30px] place-items-center rounded-[5px] px-[6px] hover:bg-[#edf2ef]"
-                type="button"
-                aria-label="Previous page"
-              >
+          <!-- Table Footer Pagination -->
+          <div class="flex items-center justify-between border-t border-slate-100 px-5 py-3 text-xs text-slate-500">
+            <span>Showing {{ visibleOrders.length }} orders</span>
+            <div class="flex items-center gap-1">
+              <button class="grid size-7 place-items-center rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50">
                 <ChevronLeft :size="14" />
               </button>
-              <button
-                type="button"
-                class="inline-grid h-[30px] min-w-[30px] place-items-center rounded-[5px] bg-[#102f23] px-[6px] text-white"
-              >
+              <button class="grid size-7 place-items-center rounded-md bg-emerald-800 font-bold text-white">
                 1
               </button>
-              <button
-                class="inline-grid size-[30px] min-w-[30px] place-items-center rounded-[5px] px-[6px] hover:bg-[#edf2ef]"
-                type="button"
-              >
-                2
-              </button>
-              <button
-                class="inline-grid size-[30px] min-w-[30px] place-items-center rounded-[5px] px-[6px] hover:bg-[#edf2ef]"
-                type="button"
-              >
-                3
-              </button>
-              <span>…</span>
-              <button
-                class="inline-grid size-[30px] min-w-[30px] place-items-center rounded-[5px] px-[6px] hover:bg-[#edf2ef]"
-                type="button"
-              >
-                30
-              </button>
-              <button
-                class="inline-grid size-[30px] place-items-center rounded-[5px] px-[6px] hover:bg-[#edf2ef]"
-                type="button"
-                aria-label="Next page"
-              >
+              <button class="grid size-7 place-items-center rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50">
                 <ChevronRight :size="14" />
               </button>
             </div>
           </div>
         </section>
       </div>
-    </div>
+    </main>
   </div>
 </template>
